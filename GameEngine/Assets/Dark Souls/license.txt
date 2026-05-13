@@ -1,0 +1,8 @@
+Model Information:
+* title:	Dark Souls 3 Firelink Set
+* source:	https://sketchfab.com/3d-models/dark-souls-3-firelink-set-9d52df0b5981453998e96a5d8e673621
+* author:	goldenex (https://sketchfab.com/goldenex)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

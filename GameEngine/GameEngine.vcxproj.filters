@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{4d7cb2c9-d6d3-49e6-8b8c-8bb96f32b896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{09b8aa82-a068-454c-9b03-5c302c129fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{1c2f963a-d501-4dad-ae11-380d21e79c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Window">
+      <UniqueIdentifier>{cf1f7399-110a-4a7e-a940-bc0e8d570f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Input">
+      <UniqueIdentifier>{a44b9cda-c8ca-432a-ad32-00bc1d6b5336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Engine">
+      <UniqueIdentifier>{f906cd38-18d1-4c2c-b8e6-59817cd794e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Timer">
+      <UniqueIdentifier>{d724607f-b79f-46fa-85cb-de6225faf48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shaders">
+      <UniqueIdentifier>{29f9fc0c-2a3c-44be-8909-03acdbe81ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer">
+      <UniqueIdentifier>{0daa218f-a852-42ab-9c2a-410c89115d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Camera">
+      <UniqueIdentifier>{240eb60b-cf16-49ff-806f-0d2fce86bc52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{ca1ff553-b150-48c6-8f00-17285bfc0f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Systems">
+      <UniqueIdentifier>{a6c7cb4d-8001-4e2c-b0e0-27daf6c611b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\ImGui">
+      <UniqueIdentifier>{f869b8e9-48e7-4ed3-a180-a713a2b33196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\ImGui\backends">
+      <UniqueIdentifier>{3d45e19d-f840-4b29-ab6c-cba84f8f5d67}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Core\Window\Window.h">
+      <Filter>Source\Core\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Input\Input.h">
+      <Filter>Source\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Engine\Engine.h">
+      <Filter>Source\Core\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Timer\Timer.h">
+      <Filter>Source\Core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Renderer.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Shader.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\VertexArray.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Vertex.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Texture.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\stb_image.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Camera\Camera.h">
+      <Filter>Source\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Mesh.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Model.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Material.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\PBRMaterial.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\PhongMaterial.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Shaders.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\Scene.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TransformComponent.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\RenderComponents.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\EntityManager.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Systems\RenderSystem.h">
+      <Filter>Source\Core\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Systems\TransformSystem.h">
+      <Filter>Source\Core\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\UnlitMaterial.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ThirdParty\glad.c">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\Core\Window\Window.cpp">
+      <Filter>Source\Core\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Input\Input.cpp">
+      <Filter>Source\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Engine\Engine.cpp">
+      <Filter>Source\Core\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Timer\Timer.cpp">
+      <Filter>Source\Core\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Shader.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Renderer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\VertexArray.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\stb_image.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Texture.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Camera\Camera.cpp">
+      <Filter>Source\Core\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Model.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Shaders.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_sdl2.cpp">
+      <Filter>ThirdParty\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_opengl3.cpp">
+      <Filter>ThirdParty\ImGui\backends</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shaders\Phong.vert">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Phong.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Unlit.vert">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Unlit.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\PBR.vert">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\PBR.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

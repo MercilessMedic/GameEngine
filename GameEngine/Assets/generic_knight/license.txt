@@ -1,0 +1,11 @@
+Model Information:
+* title:	Knight (Final)
+* source:	https://sketchfab.com/3d-models/knight-final-6234171380f14c77b3d89efe973e9fab
+* author:	Daniel Gryningstjerna (https://sketchfab.com/dangry)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Knight (Final)" (https://sketchfab.com/3d-models/knight-final-6234171380f14c77b3d89efe973e9fab) by Daniel Gryningstjerna (https://sketchfab.com/dangry) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
