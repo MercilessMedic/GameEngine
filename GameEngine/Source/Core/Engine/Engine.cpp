@@ -19,10 +19,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Scene scene;
-static float val = 1.0f;
 
 Engine::Engine() :
-	window(1200, 700, "Game Engine Sandrito"),
+	window(1280, 720, "Game Engine Sandrito"),
 	camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 	isRunning = false;
@@ -39,30 +38,56 @@ bool Engine::init()
 
 	isRunning = true;
 
+	//Create the shaders
 	Shaders::PBR = std::make_shared<Shader>("Source/Shaders/PBR.vert", "Source/Shaders/PBR.frag");
 	Shaders::Phong = std::make_shared<Shader>("Source/Shaders/Phong.vert", "Source/Shaders/Phong.frag");
 	Shaders::Unlit = std::make_shared<Shader>("Source/Shaders/Unlit.vert", "Source/Shaders/Unlit.frag");
 
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	ImGui::StyleColorsDark();
-
 	ImGui_ImplSDL2_InitForOpenGL(window.getWindow(), window.getContext());
 	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui::GetIO().FontGlobalScale = 1.3f;
 
 	return true;
 }
 
 void Engine::drawUI(int frameRate)
 {
+	EntityManager& em = scene.getEntityManager();
+	int numEntities = em.entities.size();
+
+	//Draw the main Window
+	//--------------------
 	ImGui::Begin("Scene");
 	ImGui::Text("FPS: %d", frameRate);
-	ImGui::SliderFloat("Some random slider!", &val, 1.0f, 10.0f);
-
-	if (isFpsCapped)
+	for( Entity e : em.entities )
 	{
-		const char* text = "Uncap fps";
-		if (ImGui::Button(text))
+		std::string eTag = em.getTagComponent(e)->tag;
+		bool isSelected = (e == editorState.currentEntity);
+		if(  isSelected )
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.8f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.5f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.2f, 0.0f, 1.0f));
+		}
+
+		if( ImGui::Button(eTag.c_str()) )
+		{
+			editorState.currentEntity = e;
+		};
+
+		if( isSelected )
+		{
+			ImGui::PopStyleColor(3);
+		}
+
+	}
+
+	if(isFpsCapped)
+	{
+		char buff[] = "Uncap fps";
+		
+		if (ImGui::Button(buff))
 		{
 			isFpsCapped = !isFpsCapped;
 			std::cout << "Changes Frame cap!\n";
@@ -70,18 +95,99 @@ void Engine::drawUI(int frameRate)
 	}
 	else
 	{
-		const char* text = "cap fps";
-		if (ImGui::Button(text))
+		char buff[] = "cap fps";
+		if (ImGui::Button(buff))
 		{
 			isFpsCapped = !isFpsCapped;
 			std::cout << "Changes Frame cap!\n";
 		}
 	}
+	ImGui::End();
 
+	//Draw the inspector
+	//---------------------
+	ImGui::Begin("Inspector");
+	if( editorState.currentEntity != INVALID_ENTITY )
+	{
+		TransformComponent* transform = em.getTransformComponent(editorState.currentEntity);
+		
+		if( transform )
+		{
+			ImVec4 Red = { 1.0, 0.0, 0.0, 1.0 };
+			ImVec4 Green = { 0.0, 1.0, 0.0, 1.0 };
+			ImVec4 Blue = { 0.0, 0.0, 1.0, 1.0 };
+			//Position
+			//--------
+			glm::vec3& position = transform->position;
+			ImGui::Text("Position");
+			ImGui::Separator();
+			ImGui::TextColored(Red, "x");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##posX", &position.x, 0.05f, -1000.0f, 1000.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Green, "y");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##posY", &position.y, 0.05f, -1000.0f, 1000.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Blue, "Z");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##posZ", &position.z, 0.05f, -1000.0f, 1000.0f);
+
+			//Rotation
+			//--------
+			glm::vec3& rotation = transform->rotation;
+			ImGui::Text("Rotation");
+			ImGui::Separator();
+			ImGui::TextColored(Red, "x");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##rotX", &rotation.x, 0.5f, -360.0f, 360.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Green, "y");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##rotY", &rotation.y, 0.5f, -360.0f, 360.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Blue, "Z");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##rotZ", &rotation.z, 0.5f, -360.0f, 360.0f);
+			
+			//scale
+			//--------
+			glm::vec3& scale = transform->scale;
+			ImGui::Text("Scale");
+			ImGui::Separator();
+			ImGui::TextColored(Red, "x");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##scalX", &scale.x, 0.2f, 0.0f, 1000.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Green, "y");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##scalY", &scale.y, 0.2f, 0.0f, 1000.0f);
+
+			ImGui::SameLine();
+			ImGui::TextColored(Blue, "Z");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			ImGui::DragFloat("##scalZ", &scale.z, 0.2f, 0.0f, 1000.0f);
+		}
+	}
 	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	
 }
 
 void Engine::capFPS( Uint32 frameStart )
@@ -152,19 +258,15 @@ void Engine::run()
 	scene.addMesh(eLightCube, MeshComponent{ lightCubeMesh });
 	scene.addTransform(eLightCube, TransformComponent());
 
-	//Model spiderman("Assets/Spider-Man/scene.gltf");
-	//Model hollow("Assets/Dark Souls/scene.gltf");
-	//Model sphere("Assets/sphereu /scene.gltf");
-	//Model cube("Assets/cube/scene.gltf");
-	//Model knight("Assets/generic_knight/scene.gltf");
-	//Model alex("Assets/alex_warzone/scene.gltf");
-	//Model ghost("Assets/ghost/scene.gltf");
-	//Model samurai_helmet("Assets/samurai_helmet/scene.gltf");
-
+	
+	auto knightModel = std::make_shared<Model>("Assets/generic_knight/scene.gltf");
 	auto stoneModel = std::make_shared<Model>("Assets/stone/scene.gltf");
 	Entity eStone = scene.createEntity();
+	Entity eKnight = scene.createEntity();
 	scene.addModel(eStone, ModelComponent{ stoneModel });
-
+	scene.addModel(eKnight, ModelComponent{ knightModel });
+	//scene.addTag(eStone, "Stone");
+	//scene.addTag(eKnight, "Knight");
 	//Render loop
 	//-----------
 	SDL_Event e;

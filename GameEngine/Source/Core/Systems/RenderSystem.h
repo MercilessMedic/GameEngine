@@ -11,7 +11,7 @@ public:
 		//Go through Model components and render
 		for(auto it = em.modelComponents.begin(); it != em.modelComponents.end(); it++)
 		{
-			unsigned int entity = it->first;
+			Entity entity = it->first;
 			ModelComponent& modelComp = it->second;
 			
 			auto transIt = em.transforms.find(entity);
@@ -23,7 +23,7 @@ public:
 		//Go through Mesh components and render
 		for( auto it = em.meshComponents.begin(); it != em.meshComponents.end(); it++)
 		{
-			unsigned int entity = it->first;
+			Entity entity = it->first;
 			MeshComponent& meshComp = it->second;
 
 			auto transIt = em.transforms.find(entity);

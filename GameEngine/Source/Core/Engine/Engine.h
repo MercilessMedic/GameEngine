@@ -11,7 +11,7 @@
 #include "Renderer/Shaders.h"
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Systems/TransformSystem.h"
-
+#include "EditorState.h"
 
 class Engine
 {
@@ -39,7 +39,7 @@ private:
 	Input input;
 	Timer fpsTimer;
 	Camera camera;
-
+	EditorState editorState;
 	const int TARGET_FPS = 30;
 	const int FRAME_DELAY = 1000 / TARGET_FPS;
 

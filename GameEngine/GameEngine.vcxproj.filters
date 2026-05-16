@@ -117,6 +117,12 @@
     <ClInclude Include="Source\Renderer\UnlitMaterial.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Engine\EditorState.h">
+      <Filter>Source\Core\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TagComponent.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\glad.c">

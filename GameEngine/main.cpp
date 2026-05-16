@@ -15,8 +15,8 @@ int main(int argc, char* argv[])
 	else
 	{
 		printf("Welcome to Game Engine Sandrito!\n");
-		
 	}
+
 	myEngine.run();
 	myEngine.shutdown();
 	return 0;

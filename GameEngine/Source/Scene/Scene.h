@@ -19,6 +19,11 @@ public:
 		return entityManager.createEntity();
 	}
 
+	void addTag(Entity e, std::string tag)
+	{
+		entityManager.addTagComponent(e, TagComponent{ tag });
+	}
+
 	void addTransform( Entity e, const TransformComponent& transform )
 	{
 		entityManager.addTransformComponent( e, transform );
