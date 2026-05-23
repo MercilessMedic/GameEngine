@@ -9,7 +9,8 @@ void Renderer::init()
 	glDepthFunc(GL_LESS);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable( GL_CULL_FACE );
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	
+	//glEnable( GL_CULL_FACE );
 	printf("Renderer Initialized, OpenGL version: %s\n", glGetString(GL_VERSION));
 }
 
@@ -17,7 +18,6 @@ void Renderer::beginFrame(int width, int height)
 {
 	glViewport(0, 0, width, height);
 	clear();
-
 }
 
 void Renderer::setCamera(const Camera& camera, int width, int height) 
@@ -60,12 +60,13 @@ void Renderer::draw(const Mesh& mesh, const glm::mat4& modelMatrix )
 	}
 	
 	Shader& shader = material->getShader();
-	
-	if( activeShaderId != shader.getId() )
-	{
-		shader.use();
-		activeShaderId = shader.getId();
-	}
+	shader.use();
+	//
+	//if( activeShaderId != shader.getId() )
+	//{
+	//	shader.use();
+	//	activeShaderId = shader.getId();
+	//}
 	
 	glm::mat3 normalMatrix = glm::transpose( glm::inverse(glm::mat3(modelMatrix)) );
 	

@@ -8,6 +8,7 @@ class Scene
 {
 public:
 	
+	//Calls update on the core systems
 	void update( Renderer &renderer )
 	{
 		transformSystem.update( entityManager );
@@ -18,22 +19,22 @@ public:
 	{
 		return entityManager.createEntity();
 	}
-
+	//Adds a tag component to an entity in the scene
 	void addTag(Entity e, std::string tag)
 	{
 		entityManager.addTagComponent(e, TagComponent{ tag });
 	}
-
+	//Adds a transform component to an entity in the scene
 	void addTransform( Entity e, const TransformComponent& transform )
 	{
 		entityManager.addTransformComponent( e, transform );
 	}
-
+	//Adds a model component to an entity in the scene
 	void addModel( Entity e, const ModelComponent& modelComp )
 	{
 		entityManager.addModelComponent( e, modelComp );
 	}
-
+	//Adds a mesh component to an entity in the scene
 	void addMesh( Entity e, const MeshComponent& meshComp )
 	{
 		entityManager.addMeshComponent(e, meshComp);
@@ -63,5 +64,4 @@ private:
 	EntityManager entityManager;
 	RenderSystem renderSystem;
 	TransformSystem transformSystem;
-
 };

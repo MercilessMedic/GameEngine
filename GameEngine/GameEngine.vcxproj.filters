@@ -43,6 +43,9 @@
     <Filter Include="ThirdParty\ImGui\backends">
       <UniqueIdentifier>{3d45e19d-f840-4b29-ab6c-cba84f8f5d67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Game">
+      <UniqueIdentifier>{cb2061e3-bde1-4d9e-a1e7-5f0c2a8169d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Window\Window.h">
@@ -122,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\TagComponent.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MyGame.h">
+      <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

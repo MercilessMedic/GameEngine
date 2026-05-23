@@ -18,7 +18,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Scene scene;
 
 Engine::Engine() :
 	window(1280, 720, "Game Engine Sandrito"),
@@ -51,9 +50,8 @@ bool Engine::init()
 	return true;
 }
 
-void Engine::drawUI(int frameRate)
+void Engine::drawUI(EntityManager& em, int frameRate)
 {
-	EntityManager& em = scene.getEntityManager();
 	int numEntities = em.entities.size();
 
 	//Draw the main Window
@@ -199,82 +197,82 @@ void Engine::capFPS( Uint32 frameStart )
 	}
 }
 
-void Engine::run()
+void Engine::run( Game& game )
 {
 	int frameCount = 0;
 	int frameRate = 0;
 
 	//Cube setup
 	//---------
-	Vertex cubeVertices[] =
-	{
-		// Position                         // Normal                // TexCoords
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
+	//Vertex cubeVertices[] =
+	//{
+	//	// Position					   //Normal						 //TexCoords
+	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 1.0f) },
 
-		{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
 
-		{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
 
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
 
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
 
-		{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-		{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) }
-	};
+	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//	{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
+	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
+	//};
 
-	auto cubeVertexArray = std::make_shared<VertexArray>(cubeVertices, 36);
-	auto lightCubeMesh = std::make_shared<Mesh>(cubeVertexArray);
-	Entity eLightCube = scene.createEntity();
-	scene.addMesh(eLightCube, MeshComponent{ lightCubeMesh });
-	scene.addTransform(eLightCube, TransformComponent());
-
+	//auto cubeVertexArray = std::make_shared<VertexArray>(cubeVertices, 36);
+	//auto lightCubeMesh = std::make_shared<Mesh>(cubeVertexArray);
+	//Entity eLightCube = scene.createEntity();
+	//scene.addMesh(eLightCube, MeshComponent{ lightCubeMesh });
 	
-	auto knightModel = std::make_shared<Model>("Assets/generic_knight/scene.gltf");
-	auto stoneModel = std::make_shared<Model>("Assets/stone/scene.gltf");
-	Entity eStone = scene.createEntity();
-	Entity eKnight = scene.createEntity();
-	scene.addModel(eStone, ModelComponent{ stoneModel });
-	scene.addModel(eKnight, ModelComponent{ knightModel });
+	//auto knightModel = std::make_shared<Model>("Assets/generic_knight/scene.gltf");
+	//auto stoneModel = std::make_shared<Model>("Assets/stone/scene.gltf");
+	//Entity eStone = scene.createEntity();
+	//Entity eKnight = scene.createEntity();
+	//scene.addModel(eStone, ModelComponent{ stoneModel });
+	//scene.addModel(eKnight, ModelComponent{ knightModel });
+	//scene.addTag(eKnight, "TAMAZI");
+
 	//scene.addTag(eStone, "Stone");
 	//scene.addTag(eKnight, "Knight");
 	//Render loop
 	//-----------
 	SDL_Event e;
-	Timer timer;
-	timer.start();
+	//Timer timer;
+	//timer.start();
 	fpsTimer.start();
 	isRunning = true;
-	glm::vec3 lightCubePosition = glm::vec3(1.0f, 1.0f, 1.0f);
+	//glm::vec3 lightCubePosition = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	while (isRunning)
 	{
@@ -282,17 +280,17 @@ void Engine::run()
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
 
-		float radius = 3.0f;
-		float speed = 1.0f;
-		float angle = timer.getTicks() / 1000.0f * speed;
-		float x = radius * sin(angle);
-		float z = radius * cos(angle);
-		lightCubePosition.x = x;
-		lightCubePosition.z = z;
+		//float radius = 3.0f;
+		//float speed = 1.0f;
+		//float angle = timer.getTicks() / 1000.0f * speed;
+		//float x = radius * sin(angle);
+		//float z = radius * cos(angle);
+		//lightCubePosition.x = x;
+		//lightCubePosition.z = z;
 
 		Uint32 frameStart = SDL_GetTicks64();
 		float dt = fpsTimer.getDeltaSeconds();
-
+			
 		//Process all the events
 		//---------------------
 		while (SDL_PollEvent(&e))
@@ -347,20 +345,22 @@ void Engine::run()
 		renderer.beginFrame(window.getWidth(), window.getHeight());
 		renderer.setCamera(camera, window.getWidth(), window.getHeight());
 
-		Shaders::PBR->use();
-		Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
-		Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
+		//Shaders::PBR->use();
+		//Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
+		//Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
 
-		auto* transform = scene.getTransformComp(eLightCube);
-		transform->position = lightCubePosition;
+		//auto* transform = scene.getTransformComp(eLightCube);
+		//transform->position = lightCubePosition;
 
-		//Update and draw the scene
-		//---------------------------
-		scene.update(renderer);
+		game.update();
+
+		//draw the game scene
+		//-------------------
+		game.scene.update(renderer);
 
 		//Draw the GUI
 		//------------
-		drawUI(frameRate);
+		drawUI(game.scene.getEntityManager(), frameRate);
 
 		//Swap the buffers
 		//----------------

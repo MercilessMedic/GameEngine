@@ -61,8 +61,6 @@ void Input::update()
 	
 	//Update the previous Mouse Button state for the next frame
 	std::memcpy( previousMouseButtons, currentMouseButtons, sizeof( currentMouseButtons));
-
-
 }
 
 bool Input::isKeyDown(SDL_Scancode key) const

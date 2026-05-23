@@ -1,23 +1,28 @@
 #include <stdio.h>
 #include "Core/Engine/Engine.h"
+#include "Game/MyGame.h"
 #include <assimp/version.h>
 
 int main(int argc, char* argv[])
 {
 
 	Engine myEngine;
-	
+
 	if( !myEngine.init() )
 	{
-		printf("Failed to startup the engine!\n");
-		return 1;
+		throw std::runtime_error("Failed to startup the engine!\n");
 	}
 	else
 	{
 		printf("Welcome to Game Engine Sandrito!\n");
 	}
 
-	myEngine.run();
+	MyGame game;
+	game.setEngine( &myEngine );
+	game.init();
+
+	myEngine.run( game );
 	myEngine.shutdown();
+
 	return 0;
 }

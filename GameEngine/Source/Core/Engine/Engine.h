@@ -3,15 +3,27 @@
 #include <SDL.h>
 #include <iostream>
 #include <glad/glad.h>
+
 #include "Core/Window/Window.h"
 #include "Core/Input/Input.h"
 #include "Core/Timer/Timer.h"
-#include "Renderer/Renderer.h"
 #include "Core/Camera/Camera.h"
+
+#include "Game/Game.h"
+
+#include "Renderer/Renderer.h"
 #include "Renderer/Shaders.h"
+
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Systems/TransformSystem.h"
+
 #include "EditorState.h"
+
+enum class EngineState
+{
+	Editor,
+	Play
+};
 
 class Engine
 {
@@ -21,13 +33,12 @@ public:
 
 	bool init();
 	
-	void drawUI( int frameRate );
+	void drawUI( EntityManager& em, int frameRate );
 
 	void capFPS( Uint32 frameStart );
 
-	void run();
+	void run( Game& game );
 
-	
 	void shutdown();
 
 	Window& getWindow() { return window; }

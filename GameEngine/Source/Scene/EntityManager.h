@@ -25,6 +25,7 @@ public:
 	{
 		nextEntity += 1;
 		entities.insert(nextEntity);
+		//Automatically create default transform and tag components for newly created entity
 		addTransformComponent(nextEntity, TransformComponent{});
 		addTagComponent(nextEntity, TagComponent{ "Entity" + to_string(nextEntity) });
 		return nextEntity;

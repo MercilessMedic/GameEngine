@@ -8,11 +8,11 @@
 class TransformSystem
 {
 public:
+	//
 	void update(EntityManager& em)
 	{
 		for(auto it = em.transforms.begin(); it != em.transforms.end(); it++)
 		{
-			
 			TransformComponent& transform = it->second;
 			transform.modelMatrix = computeLocalMatrix( transform );
 		}

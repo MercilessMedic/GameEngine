@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Game\MyGame.h" />
     <ClInclude Include="Source\Core\Camera\Camera.h" />
     <ClInclude Include="Source\Core\Engine\EditorState.h" />
     <ClInclude Include="Source\Core\Engine\Engine.h" />

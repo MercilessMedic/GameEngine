@@ -6,6 +6,8 @@
 class RenderSystem
 {
 public:
+	
+	//Draw every entity based on their transforms.
 	void update( EntityManager& em, Renderer& renderer)
 	{
 		//Go through Model components and render
