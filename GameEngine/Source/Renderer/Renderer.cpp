@@ -20,11 +20,11 @@ void Renderer::beginFrame(int width, int height)
 	clear();
 }
 
-void Renderer::setCamera(const Camera& camera, int width, int height) 
+void Renderer::setCamera( glm::mat4 viewMat, glm::mat4 projectMat, glm::vec3 viewPos ) 
 {
-	curCameraView = camera.getViewMatrix();
-	curCameraProject = camera.getProjectionMatrix( width, height);
-	curCameraViewPos = camera.Position;
+	curCameraView = viewMat;
+	curCameraProject = projectMat;
+	curCameraViewPos = viewPos;
 };
 
 

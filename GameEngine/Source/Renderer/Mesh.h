@@ -17,6 +17,11 @@ public:
     const std::shared_ptr<VertexArray>& getVertexArray() const { return vertexArray; }
     const std::shared_ptr<Material>& getMaterial() const { return material; }
 
+    template<typename T>
+    std::shared_ptr<T>getMaterialAs()
+    {
+        return std::dynamic_pointer_cast<T>(material);
+    }
     void setMaterial(std::shared_ptr<Material> mat) { material = mat; }
 
 private:

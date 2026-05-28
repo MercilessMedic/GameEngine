@@ -132,6 +132,9 @@
     <ClInclude Include="Game\MyGame.h">
       <Filter>Source\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\CameraComponent.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\glad.c">

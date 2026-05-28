@@ -6,6 +6,7 @@ Timer::Timer():
 	paused(false), started(false)
 {}
 
+//Starts or Restarts the timer
 void Timer::start()
 {
 	started = true;

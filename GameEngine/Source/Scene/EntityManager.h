@@ -5,7 +5,8 @@
 #include "TransformComponent.h"
 #include "RenderComponents.h"
 #include "TagComponent.h"
-#include <unordered_set>
+#include "CameraComponent.h"
+
 //This is just a handle for an Entity in the game world
 typedef uint32_t Entity;
 
@@ -20,6 +21,7 @@ public:
 	std::unordered_map<Entity, ModelComponent> modelComponents;
 	std::unordered_map<Entity, MeshComponent> meshComponents; //Mesh components are specifically for Entities that don't have high level models
 	std::unordered_map<Entity, TagComponent> tagComponents;
+	std::unordered_map<Entity, CameraComponent> cameraComponents;
 
 	Entity createEntity() 
 	{
@@ -37,6 +39,7 @@ public:
 		transforms.erase(e);
 		modelComponents.erase(e);
 		meshComponents.erase(e);
+		cameraComponents.erase(e);
 	}
 
 	bool entityExists( Entity e )
@@ -73,7 +76,6 @@ public:
 	{
 		if (entityExists(e))
 		{
-			cout << "Entity with id " << e << " therefore we added the component";
 			modelComponents[e] = modelComp;
 		}
 		else
@@ -92,7 +94,18 @@ public:
 		{
 			printf("[WARNING] [EntityManager] can not add mesh Component. Entity by Id %d does not exist!", e);
 		}
+	}
 
+	void addCameraComponent( Entity e, CameraComponent cameraComp)
+	{
+		if( entityExists(e) )
+		{
+			cameraComponents[e] = cameraComp;
+		}
+		else
+		{
+			printf("[WARNING] [EntityManager] can not add camera Component. Entity by Id %d does not exist!", e);
+		}
 	}
 
 	bool hasTransform( Entity e)
@@ -108,6 +121,10 @@ public:
 	bool hasMesh( Entity e )
 	{
 		return meshComponents.find(e) != meshComponents.end();
+	}
+	bool hasCamera(Entity e)
+	{
+		return cameraComponents.find(e) != cameraComponents.end();
 	}
 	
 	TagComponent* getTagComponent(Entity e)
@@ -144,6 +161,16 @@ public:
 	{
 		auto it = meshComponents.find(e);
 		if (it == meshComponents.end())
+		{
+			return nullptr;
+		}
+		return &it->second;
+	}
+
+	CameraComponent* getCameraComponent(Entity e)
+	{
+		auto it = cameraComponents.find(e);
+		if (it == cameraComponents.end())
 		{
 			return nullptr;
 		}

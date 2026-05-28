@@ -17,7 +17,7 @@ public:
 	void beginFrame( int width, int height );
 
 	//Sets camera matrices and position in the renderer
-	void setCamera( const Camera& camera, int width, int height);
+	void setCamera( glm::mat4 viewMat, glm::mat4 projectMat, glm::vec3 viewPos );
 
 	//Draw function for Vertex Array
 	void draw(std::shared_ptr<VertexArray> vertexArray, Shader& shader);

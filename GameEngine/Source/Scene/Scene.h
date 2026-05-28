@@ -40,6 +40,11 @@ public:
 		entityManager.addMeshComponent(e, meshComp);
 	}
 
+	void addCamera( Entity e, const CameraComponent& cameraComp )
+	{
+		entityManager.addCameraComponent( e, cameraComp );
+	}
+
 	TransformComponent* getTransformComp( Entity e )
 	{
 		return entityManager.getTransformComponent( e );
@@ -53,6 +58,10 @@ public:
 	MeshComponent* getMeshComp( Entity e)
 	{
 		return entityManager.getMeshComponent(e);
+	}
+	CameraComponent* getCameraComp(Entity e)
+	{
+		return entityManager.getCameraComponent(e);
 	}
 
 	EntityManager& getEntityManager()

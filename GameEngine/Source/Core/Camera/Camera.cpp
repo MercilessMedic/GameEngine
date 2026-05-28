@@ -14,7 +14,7 @@ Camera::Camera( glm::vec3 position, glm::vec3 up, float yaw, float pitch):
 	updateCameraVectors();
 }
 
-void Camera::processKeyboard( CameraMovement movement, float dt)
+void Camera::processKeyboard( CameraMovement movement, float dt )
 {
 	float velocity = MovementSpeed * dt;
 

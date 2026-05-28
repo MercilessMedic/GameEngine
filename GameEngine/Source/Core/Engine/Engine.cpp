@@ -21,7 +21,7 @@
 
 Engine::Engine() :
 	window(1280, 720, "Game Engine Sandrito"),
-	camera(glm::vec3(0.0f, 0.0f, 3.0f))
+	engineCamera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 	isRunning = false;
 	isPaused = false;
@@ -58,6 +58,7 @@ void Engine::drawUI(EntityManager& em, int frameRate)
 	//--------------------
 	ImGui::Begin("Scene");
 	ImGui::Text("FPS: %d", frameRate);
+	ImGui::Text("Press F to start the game!");
 	for( Entity e : em.entities )
 	{
 		std::string eTag = em.getTagComponent(e)->tag;
@@ -68,7 +69,6 @@ void Engine::drawUI(EntityManager& em, int frameRate)
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.5f, 0.0f, 1.0f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.2f, 0.0f, 1.0f));
 		}
-
 		if( ImGui::Button(eTag.c_str()) )
 		{
 			editorState.currentEntity = e;
@@ -202,92 +202,13 @@ void Engine::run( Game& game )
 	int frameCount = 0;
 	int frameRate = 0;
 
-	//Cube setup
-	//---------
-	//Vertex cubeVertices[] =
-	//{
-	//	// Position					   //Normal						 //TexCoords
-	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec2(0.0f, 1.0f) },
-
-	//	{ glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec2(0.0f, 0.0f) },
-
-	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec3(1.0f,  0.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(0.5f, -0.5f, -0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(0.5f, -0.5f,  0.5f),   glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f,  0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, -1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-
-	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec3(0.5f,  0.5f, -0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(0.5f,  0.5f,  0.5f),   glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f,  0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 0.0f) },
-	//	{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
-	//};
-
-	//auto cubeVertexArray = std::make_shared<VertexArray>(cubeVertices, 36);
-	//auto lightCubeMesh = std::make_shared<Mesh>(cubeVertexArray);
-	//Entity eLightCube = scene.createEntity();
-	//scene.addMesh(eLightCube, MeshComponent{ lightCubeMesh });
-	
-	//auto knightModel = std::make_shared<Model>("Assets/generic_knight/scene.gltf");
-	//auto stoneModel = std::make_shared<Model>("Assets/stone/scene.gltf");
-	//Entity eStone = scene.createEntity();
-	//Entity eKnight = scene.createEntity();
-	//scene.addModel(eStone, ModelComponent{ stoneModel });
-	//scene.addModel(eKnight, ModelComponent{ knightModel });
-	//scene.addTag(eKnight, "TAMAZI");
-
-	//scene.addTag(eStone, "Stone");
-	//scene.addTag(eKnight, "Knight");
 	//Render loop
 	//-----------
 	SDL_Event e;
-	//Timer timer;
-	//timer.start();
 	fpsTimer.start();
 	isRunning = true;
-	//glm::vec3 lightCubePosition = glm::vec3(1.0f, 1.0f, 1.0f);
-
 	while (isRunning)
 	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame();
-		ImGui::NewFrame();
-
-		//float radius = 3.0f;
-		//float speed = 1.0f;
-		//float angle = timer.getTicks() / 1000.0f * speed;
-		//float x = radius * sin(angle);
-		//float z = radius * cos(angle);
-		//lightCubePosition.x = x;
-		//lightCubePosition.z = z;
-
 		Uint32 frameStart = SDL_GetTicks64();
 		float dt = fpsTimer.getDeltaSeconds();
 			
@@ -311,59 +232,104 @@ void Engine::run( Game& game )
 
 		//Lock/unlock mouse Cursor
 		//------------------------
-		if (input.isKeyPressed(SDL_SCANCODE_ESCAPE))
+		if( input.isKeyPressed(SDL_SCANCODE_ESCAPE) )
 		{
 			isPaused = !isPaused;
 		}
-		if (isPaused)
-		{
-			SDL_SetRelativeMouseMode(SDL_FALSE); //Cursor appears and is freed
-		}
-		else
-		{
-			SDL_SetRelativeMouseMode(SDL_TRUE);  //Cursor disappears and locks
-			float xOffset = (float)input.getMouseXRel();
-			float yOffset = (float)input.getMouseYRel();
-			camera.processMouseMovement(xOffset, -yOffset); //Invert Y for OpenGL
+		//Stop the loop if quit was requested
+		//-----------------------------------
+		if( input.isQuitRequested() )
+		{ 
+			isRunning = false; 
 		}
 
-		//Handle camera movement
-		//----------------------
-		if (input.isQuitRequested()) { isRunning = false; }
-		if (input.isKeyDown(SDL_SCANCODE_W)) { camera.processKeyboard(CameraMovement::FORWARD, dt); }
-		if (input.isKeyDown(SDL_SCANCODE_A)) { camera.processKeyboard(CameraMovement::LEFT, dt); }
-		if (input.isKeyDown(SDL_SCANCODE_S)) { camera.processKeyboard(CameraMovement::BACKWARD, dt); }
-		if (input.isKeyDown(SDL_SCANCODE_D)) { camera.processKeyboard(CameraMovement::RIGHT, dt); }
+		
+		glm::mat4 viewMat;
+		glm::mat4 projectMat;
+		glm::vec3 viewPos;
+		if( currentState == EngineState::Editor)
+		{
+			if(isPaused)
+			{
+				SDL_SetRelativeMouseMode(SDL_FALSE); //Cursor appears and is freed
+			}
+			else
+			{
+				SDL_SetRelativeMouseMode(SDL_TRUE);  //Cursor disappears and locks
+				float xOffset = (float)input.getMouseXRel();
+				float yOffset = (float)input.getMouseYRel();
+				engineCamera.processMouseMovement(xOffset, -yOffset); //Invert Y for OpenGL
+			}
 
-		//Mouse button test
-		//-----------------
-		//if (input.isMouseButtonPressed(SDL_BUTTON_RIGHT)) { printf("Right click was pressed!\n"); }
-		//if (input.isMouseButtonPressed(SDL_BUTTON_LEFT)) { printf("Left click was pressed!\n"); }
+			if( input.isKeyDown(SDL_SCANCODE_W) ) { engineCamera.processKeyboard(CameraMovement::FORWARD, dt); }
+			if( input.isKeyDown(SDL_SCANCODE_A) ) { engineCamera.processKeyboard(CameraMovement::LEFT, dt); }
+			if( input.isKeyDown(SDL_SCANCODE_S) ) { engineCamera.processKeyboard(CameraMovement::BACKWARD, dt); }
+			if( input.isKeyDown(SDL_SCANCODE_D) ) { engineCamera.processKeyboard(CameraMovement::RIGHT, dt); }
 
-		//Render the scene	
-		//------------------
+			viewMat = engineCamera.getViewMatrix();
+			projectMat = engineCamera.getProjectionMatrix(window.getWidth(), window.getHeight());
+			viewPos = engineCamera.Position;
+
+			if( input.isKeyPressed(SDL_SCANCODE_F) )
+			{
+				currentState = EngineState::Play;
+			}
+		}
+		else if( currentState == EngineState::Play )
+		{
+			if (isPaused)
+			{
+				SDL_SetRelativeMouseMode(SDL_FALSE); //Cursor appears and is freed
+			}
+
+			if (input.isKeyPressed(SDL_SCANCODE_F))
+			{
+				currentState = EngineState::Editor;
+			}
+			
+			game.update( dt );
+			
+			EntityManager& em = game.scene.getEntityManager();
+			bool gameCameraFound = false;
+			for( Entity e : em.entities )
+			{
+				CameraComponent* camComp = em.getCameraComponent(e);
+				TransformComponent* transComp = em.getTransformComponent(e);
+				if( camComp && transComp )
+				{
+					gameCameraFound = true;
+					viewMat = glm::lookAt( transComp->position, transComp->position + transComp->Forward(), transComp->Up());
+					projectMat = glm::perspective(glm::radians(camComp->Fov), (float)window.getWidth() / window.getHeight(), 
+						camComp->NearPlane, camComp->FarPlane);
+					viewPos = transComp->position;
+				}
+			}
+			if( !gameCameraFound )
+			{
+				viewMat = engineCamera.getViewMatrix();
+				projectMat = engineCamera.getProjectionMatrix(window.getWidth(), window.getHeight());
+				viewPos = engineCamera.Position;
+			}
+		}
+
+		//Render the scene with the interface if the game is running and without otherwise.	
+		//-----------------------------------------------------------------------------------
 		renderer.beginFrame(window.getWidth(), window.getHeight());
-		renderer.setCamera(camera, window.getWidth(), window.getHeight());
-
-		//Shaders::PBR->use();
-		//Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
-		//Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
-
-		//auto* transform = scene.getTransformComp(eLightCube);
-		//transform->position = lightCubePosition;
-
-		game.update();
-
+		renderer.setCamera( viewMat, projectMat, viewPos );
+		
 		//draw the game scene
-		//-------------------
 		game.scene.update(renderer);
 
-		//Draw the GUI
-		//------------
-		drawUI(game.scene.getEntityManager(), frameRate);
+		if( currentState == EngineState::Editor )
+		{
+			//Draw the GUI
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplSDL2_NewFrame();
+			ImGui::NewFrame();
+			drawUI(game.scene.getEntityManager(), frameRate);
+		}
 
 		//Swap the buffers
-		//----------------
 		window.swapBuffers();
 
 		//Update the input
@@ -372,7 +338,7 @@ void Engine::run( Game& game )
 
 		//Cap the frame rate
 		//------------------
-		if (isFpsCapped)
+		if( isFpsCapped )
 		{
 			capFPS( frameStart );
 		}

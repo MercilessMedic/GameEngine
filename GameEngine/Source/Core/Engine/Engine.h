@@ -43,13 +43,17 @@ public:
 
 	Window& getWindow() { return window; }
 
+	Input& getInput(){ return input; }
+
 	
 private:
+	EngineState currentState = EngineState::Editor;
+
 	Window window;
 	Renderer renderer;
 	Input input;
 	Timer fpsTimer;
-	Camera camera;
+	Camera engineCamera;
 	EditorState editorState;
 	const int TARGET_FPS = 30;
 	const int FRAME_DELAY = 1000 / TARGET_FPS;

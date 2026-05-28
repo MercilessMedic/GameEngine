@@ -10,7 +10,7 @@ class Game
 {
 public:
 	virtual void init() = 0;
-	virtual void update() = 0;
+	virtual void update( float dt) = 0;
 	
 	Engine* engine = nullptr;
 	
