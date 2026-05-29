@@ -135,6 +135,9 @@
     <ClInclude Include="Source\Scene\CameraComponent.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\PointlightComponent.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\glad.c">

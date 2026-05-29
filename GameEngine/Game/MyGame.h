@@ -99,10 +99,26 @@ public:
 		auto planeVertexArray = std::make_shared<VertexArray>(planeVertices, 6);
 		auto lightCubeMesh = std::make_shared<Mesh>(cubeVertexArray);
 		auto planeMesh = std::make_shared<Mesh>(planeVertexArray);
-		eLightCube = scene.createEntity();
+		
+		//Light cube 1
+		glm::vec3 color(1.0);
+		eLightCube1 = scene.createEntity();
+		scene.addPointLight(eLightCube1, PointlightComponent{ color });
+		scene.addMesh(eLightCube1, MeshComponent{ lightCubeMesh });
+
+		eLightCube2 = scene.createEntity();
+		scene.addPointLight(eLightCube2, PointlightComponent{ color });
+		scene.addMesh(eLightCube2, MeshComponent{ lightCubeMesh });
+
+		Entity eLightCube3 = scene.createEntity();
+		scene.addPointLight(eLightCube3, PointlightComponent{ color });
+		scene.addMesh(eLightCube3, MeshComponent{ lightCubeMesh });
+
+
 		ePlane = scene.createEntity();
-		scene.addMesh(eLightCube, MeshComponent{ lightCubeMesh });
 		scene.addMesh(ePlane, MeshComponent{ planeMesh });
+
+
 		
 		auto planeMaterial = scene.getEntityManager().getMeshComponent( ePlane )->mesh->getMaterialAs<UnlitMaterial>();
 		planeMaterial->color = glm::vec3{ 0.0, 0.5, 0.0};
@@ -122,12 +138,14 @@ public:
 		scene.addModel(eStone, ModelComponent{ stoneModel });
 		scene.addModel(Player, ModelComponent{ knightModel });
 		scene.addTag(Player, "PlayerKnight");
-		scene.addTag(eLightCube, "lightCube");
+		scene.addTag(eLightCube1, "lightCube1");
+		scene.addTag(eLightCube2, "lightCube2");
 		scene.addTag(ePlane, "Plane");
-		
-		Shaders::PBR->use();
-		Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
-		Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
+		scene.addTag(eCamera, "camera");
+		scene.addTag(eStone, "stone");
+		//Shaders::PBR->use();
+		//Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
+		//Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
 		printf("Initialized the game!");
 	}
 
@@ -146,7 +164,7 @@ public:
 		lightCubePosition.z = z;
 
 		//update lightCube transform
-		auto* transform = scene.getTransformComp(eLightCube);
+		auto* transform = scene.getTransformComp(eLightCube1);
 		transform->position = lightCubePosition;
 
 		//Player movement
@@ -243,7 +261,8 @@ public:
 	}
 private:
 	Timer timer;
-	Entity eLightCube;
+	Entity eLightCube1;
+	Entity eLightCube2;
 	Entity ePlane;
 	Entity Player;
 	Entity eCamera;

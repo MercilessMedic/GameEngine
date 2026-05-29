@@ -6,6 +6,7 @@
 #include "RenderComponents.h"
 #include "TagComponent.h"
 #include "CameraComponent.h"
+#include "PointlightComponent.h"
 
 //This is just a handle for an Entity in the game world
 typedef uint32_t Entity;
@@ -22,6 +23,7 @@ public:
 	std::unordered_map<Entity, MeshComponent> meshComponents; //Mesh components are specifically for Entities that don't have high level models
 	std::unordered_map<Entity, TagComponent> tagComponents;
 	std::unordered_map<Entity, CameraComponent> cameraComponents;
+	std::unordered_map<Entity, PointlightComponent> pointlightComponents;
 
 	Entity createEntity() 
 	{
@@ -105,6 +107,18 @@ public:
 		else
 		{
 			printf("[WARNING] [EntityManager] can not add camera Component. Entity by Id %d does not exist!", e);
+		}
+	}
+
+	void addPointlightComponent(Entity e, PointlightComponent pointlightComp)
+	{
+		if( entityExists(e) )
+		{
+			pointlightComponents[e] = pointlightComp;
+		}
+		else
+		{
+			printf("[WARNING] [EntityManager] can not add point light Component. Entity by Id %d does not exist!", e);
 		}
 	}
 

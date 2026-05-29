@@ -10,6 +10,31 @@ public:
 	//Draw every entity based on their transforms.
 	void update( EntityManager& em, Renderer& renderer)
 	{
+		int numPointlights = 0;
+		//set all the point light component attributes in the shader
+		for (auto it = em.pointlightComponents.begin(); it != em.pointlightComponents.end(); it++)
+		{
+			Entity lightEntity = it->first;
+			PointlightComponent& lightComp = it->second;
+
+			//Get the transform of the light entity 
+			//for setting it's position in the shader
+			auto transIt = em.transforms.find(lightEntity);
+			if (transIt == em.transforms.end()) continue;
+			glm::vec3 lightPos = transIt->second.position;
+
+			std::string arrIdx = "pointlights[" + to_string(numPointlights) + "]";
+			Shaders::PBR->use();
+			Shaders::PBR->setVec3(arrIdx + ".position", lightPos);
+			Shaders::PBR->setVec3(arrIdx + ".color", lightComp.color);
+			Shaders::PBR->setFloat(arrIdx + ".intensity", lightComp.intensity);
+			Shaders::PBR->setFloat(arrIdx + ".radius", lightComp.radius);
+			numPointlights++;
+		}
+
+		Shaders::PBR->setInt("numPointLights", numPointlights);
+
+		
 		//Go through Model components and render
 		for(auto it = em.modelComponents.begin(); it != em.modelComponents.end(); it++)
 		{

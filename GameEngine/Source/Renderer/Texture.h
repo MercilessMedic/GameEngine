@@ -7,6 +7,8 @@ using namespace std;
 
 enum class TextureType
 {
+	//IBL 
+	HDR,
 	//Phong model types
 	DIFFUSE,
 	SPECULAR,

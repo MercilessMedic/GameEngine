@@ -43,6 +43,7 @@
     <ClInclude Include="Source\Renderer\VertexArray.h" />
     <ClInclude Include="Source\Scene\CameraComponent.h" />
     <ClInclude Include="Source\Scene\EntityManager.h" />
+    <ClInclude Include="Source\Scene\PointlightComponent.h" />
     <ClInclude Include="Source\Scene\RenderComponents.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\TagComponent.h" />

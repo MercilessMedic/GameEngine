@@ -40,6 +40,11 @@ public:
 		entityManager.addMeshComponent(e, meshComp);
 	}
 
+	//Adds a point light component to an entity in the scene
+	void addPointLight(Entity e, const PointlightComponent& pointlightComp )
+	{
+		entityManager.addPointlightComponent( e, pointlightComp );
+	}
 	void addCamera( Entity e, const CameraComponent& cameraComp )
 	{
 		entityManager.addCameraComponent( e, cameraComp );

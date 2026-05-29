@@ -1,5 +1,7 @@
 #version 330 core
 
+#define MAX_POINT_LIGHTS 15
+
 in vec2 TexCoord;
 in vec3 Normal;
 in vec3 WorldPos;
@@ -27,10 +29,19 @@ struct Material
 	bool hasAOMap;
 };
 
+struct Pointlight
+{
+    vec3 position;
+    vec3 color;
+    float intensity;
+    float radius;
+};
+
 uniform Material material;
 uniform vec3 viewPos;
-uniform vec3 lightPositions[4];
-uniform vec3 lightColors[4];
+uniform Pointlight pointlights[MAX_POINT_LIGHTS];
+uniform int numPointLights;
+
 
 const float PI = 3.14159265359;
 
@@ -74,8 +85,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-
-
 void main()
 {		
     vec3 albedo = material.hasAlbedoMap ? pow(texture(material.albedoMap, TexCoord).rgb, vec3(2.2)) 
@@ -83,7 +92,6 @@ void main()
     float ao        = material.hasAOMap        ? texture(material.aoMap, TexCoord).r : material.ao;
     float roughness = material.hasRoughnessMap ? texture(material.roughnessMap, TexCoord).g : material.roughness;
     float metallic  = material.hasMetallicMap  ? texture(material.metallicMap, TexCoord).b : material.metallic;
-    //vec3 N = getNormalFromMap();
     
     vec3 N;
     if( material.hasNormalMap ) 
@@ -105,14 +113,19 @@ void main()
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
-    for(int i = 0; i < 4; ++i) 
+    for(int i = 0; i < numPointLights; ++i) 
     {
         // calculate per-light radiance
-        vec3 L = normalize(lightPositions[i] - WorldPos);
+        vec3 L = normalize(pointlights[i].position - WorldPos);
         vec3 H = normalize(V + L);
-        float distance = length(lightPositions[i] - WorldPos);
-        float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = lightColors[i] * attenuation;
+        float dist = length(pointlights[i].position - WorldPos);
+
+        float distTerm = 1.0 / max(dist * dist, 0.0001);
+        float windowTerm = clamp(1.0 - pow(dist / pointlights[i].radius, 4.0), 0.0, 1.0);
+
+        //float attenuation = 1.0 / (dist * dist);
+        float attenuation = distTerm * windowTerm;
+        vec3 radiance = pointlights[i].color * pointlights[i].intensity * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);   
@@ -137,7 +150,7 @@ void main()
         // scale light by NdotL
         float NdotL = max(dot(N, L), 0.0);        
 
-        // add to outgoing radiance Lo
+        //add to outgoing radiance Lo
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }   
     
@@ -147,12 +160,11 @@ void main()
     
     vec3 color = ambient + Lo;
 
-    // HDR tonemapping
+    //HDR tonemapping
     color = color / (color + vec3(1.0));
-    // gamma correct
+    //gamma correction
     color = pow(color, vec3(1.0/2.2)); 
    
-    FragColor = vec4(color, 1.0);
-    
+    FragColor = vec4(color, 1.0); 
 }
 
