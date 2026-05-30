@@ -1,14 +1,11 @@
 #pragma once
 
 #include <iostream>
-#include <assimp/scene.h>
 
 using namespace std;
 
 enum class TextureType
 {
-	//IBL 
-	HDR,
 	//Phong model types
 	DIFFUSE,
 	SPECULAR,
@@ -27,17 +24,17 @@ class Texture
 {
 public:
 
-	Texture(const std::string path, TextureType type);
-	~Texture(){printf("Texture destructor called!"); }
+	Texture(const std::string path, TextureType type, bool isHDR = false);
+	~Texture();
 	void bind( unsigned int slot ) const;
 	void unbind() const;
 
-	unsigned int getId() const { return textureId; }
+	unsigned int getId() const { return textureID; }
 	TextureType getType() const { return type; }
 	std::string getFilePath() const { return filePath; }
 private:
 	std::string filePath;
 	TextureType type;
-	unsigned int textureId;
+	unsigned int textureID;
 	
 };

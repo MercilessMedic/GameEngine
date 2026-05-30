@@ -34,7 +34,11 @@ public:
 
 	void init()
 	{
+		
 		timer.start();
+		std::string skyboxPath = "Assets/skyboxes/puresky.hdr";
+		std::shared_ptr<CubemapTexture> cubemap = std::make_shared<CubemapTexture>(skyboxPath);
+		scene.setSkyboxTex( cubemap );
 
 		Vertex cubeVertices[] =
 		{
@@ -82,6 +86,7 @@ public:
 			{ glm::vec3(-0.5f,  0.5f, -0.5f),  glm::vec3(0.0f,  1.0f,  0.0f), glm::vec2(0.0f, 1.0f) },
 		};
 
+		
 		Vertex planeVertices[] =
 		{
 			// First triangle
@@ -99,7 +104,7 @@ public:
 		auto planeVertexArray = std::make_shared<VertexArray>(planeVertices, 6);
 		auto lightCubeMesh = std::make_shared<Mesh>(cubeVertexArray);
 		auto planeMesh = std::make_shared<Mesh>(planeVertexArray);
-		
+		skyboxMesh = std::make_shared<Mesh>(cubeVertexArray);
 		//Light cube 1
 		glm::vec3 color(1.0);
 		eLightCube1 = scene.createEntity();
@@ -114,16 +119,13 @@ public:
 		scene.addPointLight(eLightCube3, PointlightComponent{ color });
 		scene.addMesh(eLightCube3, MeshComponent{ lightCubeMesh });
 
-
 		ePlane = scene.createEntity();
 		scene.addMesh(ePlane, MeshComponent{ planeMesh });
 
-
-		
 		auto planeMaterial = scene.getEntityManager().getMeshComponent( ePlane )->mesh->getMaterialAs<UnlitMaterial>();
 		planeMaterial->color = glm::vec3{ 0.0, 0.5, 0.0};
 		
-		auto knightModel = std::make_shared<Model>("Assets/generic_knight/scene.gltf");
+		auto knightModel = std::make_shared<Model>("Assets/sevarog/Sevarog.gltf");
 		auto stoneModel = std::make_shared<Model>("Assets/stone/scene.gltf");
 		
 		Entity eStone = scene.createEntity();
@@ -143,9 +145,7 @@ public:
 		scene.addTag(ePlane, "Plane");
 		scene.addTag(eCamera, "camera");
 		scene.addTag(eStone, "stone");
-		//Shaders::PBR->use();
-		//Shaders::PBR->setVec3("lightColors[0]", 150.0f, 150.0f, 150.0f);
-		//Shaders::PBR->setVec3("lightPositions[0]", lightCubePosition);
+
 		printf("Initialized the game!");
 	}
 
@@ -179,7 +179,7 @@ public:
 		if (playerTrans && camTrans)
 		{
 			//Define the target point
-			glm::vec3 targetLookAt = playerTrans->position + glm::vec3(0.0f, 0.0f, 0.0f);
+			glm::vec3 targetLookAt = playerTrans->position + glm::vec3(0.0f, 2.0f, 0.0f);
 
 			//Pull the camera backwards
 			camTrans->position = targetLookAt - (camTrans->Forward() * cameraDistance);
@@ -266,4 +266,5 @@ private:
 	Entity ePlane;
 	Entity Player;
 	Entity eCamera;
+	std::shared_ptr<Mesh> skyboxMesh;
 };

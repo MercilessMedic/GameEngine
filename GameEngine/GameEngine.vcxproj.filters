@@ -138,6 +138,7 @@
     <ClInclude Include="Source\Scene\PointlightComponent.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Renderer\CubemapTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\glad.c">
@@ -198,6 +199,7 @@
     <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_opengl3.cpp">
       <Filter>ThirdParty\ImGui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Renderer\CubemapTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Phong.vert">
@@ -216,6 +218,18 @@
       <Filter>Source\Shaders</Filter>
     </None>
     <None Include="Source\Shaders\PBR.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Skybox.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Skybox.vert">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\equirectangularToCubemap.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\equirectangularToCubemap.vert">
       <Filter>Source\Shaders</Filter>
     </None>
   </ItemGroup>

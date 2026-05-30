@@ -5,7 +5,9 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Texture.h"
+#include "CubemapTexture.h"
 #include "Core/Camera/Camera.h"
+
 
 class Renderer
 {
@@ -27,7 +29,11 @@ public:
 	
 	//Draw meshes of the model with their materials
 	void draw( const Model& model, const glm::mat4& modelMatrix);
+
+	//Draw a skybox
+	void drawSkybox(std::shared_ptr<CubemapTexture> cubemap);
 private:
+	std::shared_ptr<VertexArray> skyboxVAO = nullptr;
 	void clear();
 	//Currently active shader id
 	unsigned int activeShaderId;

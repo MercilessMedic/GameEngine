@@ -8,8 +8,13 @@ class RenderSystem
 public:
 	
 	//Draw every entity based on their transforms.
-	void update( EntityManager& em, Renderer& renderer)
+	void update( EntityManager& em, Renderer& renderer, std::shared_ptr<CubemapTexture> cubemap)
 	{
+		//Draw the skybox
+		if( cubemap )
+		{
+			renderer.drawSkybox(cubemap);
+		}
 		int numPointlights = 0;
 		//set all the point light component attributes in the shader
 		for (auto it = em.pointlightComponents.begin(); it != em.pointlightComponents.end(); it++)
@@ -59,5 +64,7 @@ public:
 
 			renderer.draw( *meshComp.mesh, transComp.modelMatrix);
 		}
+
+	
 	}
 };

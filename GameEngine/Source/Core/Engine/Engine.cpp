@@ -41,6 +41,9 @@ bool Engine::init()
 	Shaders::PBR = std::make_shared<Shader>("Source/Shaders/PBR.vert", "Source/Shaders/PBR.frag");
 	Shaders::Phong = std::make_shared<Shader>("Source/Shaders/Phong.vert", "Source/Shaders/Phong.frag");
 	Shaders::Unlit = std::make_shared<Shader>("Source/Shaders/Unlit.vert", "Source/Shaders/Unlit.frag");
+	Shaders::EquirectangularToCubemap = std::make_shared<Shader>("Source/Shaders/equirectangularToCubemap.vert", 
+																 "Source/Shaders/equirectangularToCubemap.frag");
+	Shaders::Skybox = std::make_shared<Shader>("Source/Shaders/Skybox.vert", "Source/Shaders/Skybox.frag");
 
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window.getWindow(), window.getContext());
@@ -199,6 +202,8 @@ void Engine::capFPS( Uint32 frameStart )
 
 void Engine::run( Game& game )
 {
+	EntityManager& em = game.scene.getEntityManager();
+
 	int frameCount = 0;
 	int frameRate = 0;
 
@@ -247,6 +252,9 @@ void Engine::run( Game& game )
 		glm::mat4 viewMat;
 		glm::mat4 projectMat;
 		glm::vec3 viewPos;
+		
+		//Handle Editor and Game States
+		//----------------------------
 		if( currentState == EngineState::Editor)
 		{
 			if(isPaused)
@@ -277,19 +285,23 @@ void Engine::run( Game& game )
 		}
 		else if( currentState == EngineState::Play )
 		{
-			if (isPaused)
-			{
-				SDL_SetRelativeMouseMode(SDL_FALSE); //Cursor appears and is freed
-			}
+			//if (isPaused)
+			//{
+			//	SDL_SetRelativeMouseMode(SDL_FALSE); //Cursor appears and is freed
+			//}
 
 			if (input.isKeyPressed(SDL_SCANCODE_F))
 			{
 				currentState = EngineState::Editor;
 			}
 			
+			//Update the game
+			//---------------
 			game.update( dt );
 			
-			EntityManager& em = game.scene.getEntityManager();
+			//Find Entity with camera component
+			//set the matrices and position of the camera
+			//-------------------------------------------
 			bool gameCameraFound = false;
 			for( Entity e : em.entities )
 			{

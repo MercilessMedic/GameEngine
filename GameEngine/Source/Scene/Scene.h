@@ -4,15 +4,17 @@
 #include "Renderer/Renderer.h"
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Systems/TransformSystem.h"
+
+
 class Scene
 {
 public:
 	
 	//Calls update on the core systems
-	void update( Renderer &renderer )
+	void update( Renderer& renderer )
 	{
 		transformSystem.update( entityManager );
-		renderSystem.update( entityManager, renderer);
+		renderSystem.update( entityManager, renderer, getSkyboxTex());
 	}
 	
 	Entity createEntity()
@@ -73,8 +75,13 @@ public:
 	{
 		return entityManager;
 	}
+	
+	void setSkyboxTex(std::shared_ptr<CubemapTexture> texture) { cubemap = texture; }
+
+	std::shared_ptr<CubemapTexture> getSkyboxTex() const { return cubemap; }
 
 private:
+	std::shared_ptr<CubemapTexture> cubemap;
 	EntityManager entityManager;
 	RenderSystem renderSystem;
 	TransformSystem transformSystem;

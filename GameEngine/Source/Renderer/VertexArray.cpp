@@ -79,13 +79,13 @@ void VertexArray::setupAttributes()
 	//Attribute 0: Position
 	glEnableVertexAttribArray( (GLuint)VertAttrib::POSITION );
 	glVertexAttribPointer(( GLuint)VertAttrib::POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position) );
-	//Attribute 1: Texture coordinates
-	glEnableVertexAttribArray( (GLuint)VertAttrib::TEXCOORDS );
-	glVertexAttribPointer( (GLuint)VertAttrib::TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords) );
-	//Attribute 2: Surface Normal
-	glEnableVertexAttribArray( (GLuint)VertAttrib::NORMAL );
-	glVertexAttribPointer( (GLuint)VertAttrib::NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal) );
-	//Attribute 3: Tangent
+	//Attribute 1: Surface Normal
+	glEnableVertexAttribArray((GLuint)VertAttrib::NORMAL);
+	glVertexAttribPointer((GLuint)VertAttrib::NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	//Attribute 2: Texture coordinates
+	glEnableVertexAttribArray((GLuint)VertAttrib::TEXCOORDS);
+	glVertexAttribPointer((GLuint)VertAttrib::TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	//Attribute 3: TangentS
 	glEnableVertexAttribArray( (GLuint)VertAttrib::TANGENT );
 	glVertexAttribPointer( (GLuint)VertAttrib::TANGENT, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent) );
 	//Attribute 4: Bitangent
