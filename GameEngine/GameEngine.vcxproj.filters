@@ -232,5 +232,11 @@
     <None Include="Source\Shaders\equirectangularToCubemap.vert">
       <Filter>Source\Shaders</Filter>
     </None>
+    <None Include="Source\Shaders\Irradiance.vert">
+      <Filter>Source\Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Irradiance.frag">
+      <Filter>Source\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -9,5 +9,6 @@ namespace Shaders
     extern std::shared_ptr<Shader> Unlit;
     extern std::shared_ptr<Shader> Skybox;
     extern std::shared_ptr<Shader> EquirectangularToCubemap;
+    extern std::shared_ptr<Shader> Irradiance;
 
 }

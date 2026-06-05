@@ -13,10 +13,12 @@ public:
 	
 	void unbind() const;
 	
-	unsigned int getId() const { return textureID; }
+	unsigned int gettextureID() const { return textureID; }
+	unsigned int getTextureIrradianceID() const { return irradianceID; }
 	
 	std::string getFilePath() const { return filePath; }
 private:
 	unsigned int textureID;
+	unsigned int irradianceID;
 	std::string filePath;
 };

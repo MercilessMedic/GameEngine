@@ -77,6 +77,8 @@
   <ItemGroup>
     <None Include="Source\Shaders\equirectangularToCubemap.frag" />
     <None Include="Source\Shaders\equirectangularToCubemap.vert" />
+    <None Include="Source\Shaders\Irradiance.frag" />
+    <None Include="Source\Shaders\Irradiance.vert" />
     <None Include="Source\Shaders\Skybox.frag" />
     <None Include="Source\Shaders\Skybox.vert" />
     <None Include="Source\Shaders\Unlit.frag" />

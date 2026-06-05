@@ -8,10 +8,14 @@ layout (location = 4) in vec3 aBitangent;
 layout (location = 5) in ivec4 aBoneIDs;     
 layout (location = 6) in vec4 aWeights;  
 
+const int MAX_BONES = 200;
+const int MAX_BONE_INFLUENCE = 4;
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat3 normalMatrix;
+uniform mat4 finalBonesMatrices[MAX_BONES];
 
 out vec2 TexCoord;
 out vec3 Normal;
@@ -19,21 +23,26 @@ out vec3 WorldPos;
 out mat3 TBN;
 
 
+
 void main()
 {
-	WorldPos = vec3( model * vec4( aPos, 1.0 ));
-	gl_Position = projection * view * vec4(WorldPos, 1.0);
-	TexCoord = aTexCoord;
 	
-	vec3 N = normalize(normalMatrix * aNormal);
-	vec3 T = normalize(normalMatrix * aTangent);
+	
+		WorldPos = vec3( model * vec4( aPos, 1.0 ));
+		gl_Position = projection * view * vec4(WorldPos, 1.0);
+		TexCoord = aTexCoord;
+	
+		vec3 N = normalize(normalMatrix * aNormal);
+		vec3 T = normalize(normalMatrix * aTangent);
 
-	//This is Gram–Schmidt method that makes sure T is
-	//completely orthogonal to normal vector
-	T = normalize(T - dot(T, N) * N);
+		//This is Gram–Schmidt method that makes sure T is
+		//completely orthogonal to normal vector
+		T = normalize(T - dot(T, N) * N);
 
-	vec3 B = cross(N, T);
+		vec3 B = cross(N, T);
 
-	TBN = mat3(T, B, N);
-	Normal = N;
+		TBN = mat3(T, B, N);
+		Normal = N;
+		
+
 }

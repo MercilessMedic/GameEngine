@@ -155,8 +155,27 @@ void Renderer::draw(const Mesh& mesh, const glm::mat4& modelMatrix )
 void Renderer::draw(const Model& model, const glm::mat4& modelMatrix)
 {
 	for (const auto& mesh : model.getMeshes())
-	{		
-		draw( mesh, modelMatrix );
+	{
+		draw(mesh, modelMatrix);
+	}
+}
+
+void Renderer::setEnvironment(std::shared_ptr<CubemapTexture> cubemap)
+{
+	activeCubemap = cubemap;
+
+	Shaders::PBR->use();
+	Shaders::PBR->setInt("irradianceMap", 5);
+
+	glActiveTexture(GL_TEXTURE5);
+
+	if (activeCubemap)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, activeCubemap->getTextureIrradianceID());
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 }
 

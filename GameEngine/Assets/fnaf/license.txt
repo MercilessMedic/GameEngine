@@ -1,0 +1,11 @@
+Model Information:
+* title:	FNaF HW1 Funtime Chica [Model Edit]
+* source:	https://sketchfab.com/3d-models/fnaf-hw1-funtime-chica-model-edit-5220bd34d420484c8e73706185390098
+* author:	Captain Allen (https://sketchfab.com/Allen_Animations)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "FNaF HW1 Funtime Chica [Model Edit]" (https://sketchfab.com/3d-models/fnaf-hw1-funtime-chica-model-edit-5220bd34d420484c8e73706185390098) by Captain Allen (https://sketchfab.com/Allen_Animations) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

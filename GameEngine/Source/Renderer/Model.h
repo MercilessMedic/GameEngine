@@ -25,12 +25,18 @@ public:
 
 	const std::vector<Mesh>& getMeshes() const { return meshes; }
 
+	auto& GetBoneInfoMap() { return boneInfoMap; }
+	
+	int& GetBoneCount() { return boneCounter; }
+
 private:
 	std::string directory;
 	std::vector<Mesh> meshes;
 	int boneCounter = 0;
-	std::vector<BoneInfo> bonesInfo;
-	std::map<string, int> boneMap;
+	std::map<std::string, BoneInfo> boneInfoMap;
+	//std::map<string, int> boneMap;
+	//std::vector<BoneInfo> bonesInfo;
+
 	std::vector<std::shared_ptr<Texture>> loadedTextures;	
 	glm::mat4 ConvertMatrix(const aiMatrix4x4& mat);
 	

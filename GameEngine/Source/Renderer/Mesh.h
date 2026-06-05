@@ -7,7 +7,7 @@
 #include "UnlitMaterial.h"
 class Mesh {
 public:
-    //By default give the mesh unlitMaterial if not material type is provided.
+    //By default give the mesh unlitMaterial if no material type is provided
     Mesh(std::shared_ptr<VertexArray> va)
         : vertexArray(va), material( make_shared<UnlitMaterial>() ) {}
 

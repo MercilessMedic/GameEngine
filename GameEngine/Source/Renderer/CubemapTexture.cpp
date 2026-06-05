@@ -82,6 +82,9 @@ CubemapTexture::CubemapTexture(std::string path)
 	int width, height, nrChannels;
 	float* hdrData = stbi_loadf(path.c_str(), &width, &height, &nrChannels, 0);
 
+	GLint originalViewport[4];
+	glGetIntegerv(GL_VIEWPORT, originalViewport);
+
 	unsigned int hdrTexture;
 	if (hdrData)
 	{
@@ -131,7 +134,7 @@ CubemapTexture::CubemapTexture(std::string path)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
-	//We set up projection matrix that with 90 degree field of view to capture entire face and
+	//We set up projection matrix  with 90 degree field of view to capture entire face and
 	//6 different view matrices which all face each side of the cube
 	glm::mat4 captureProject = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
 	glm::mat4 captureViews[] =
@@ -164,12 +167,54 @@ CubemapTexture::CubemapTexture(std::string path)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	textureID = cubemap;
+
+	//Create irradiance map
+	//---------------------
+	unsigned int irradianceMap;
+	glGenTextures(1, &irradianceMap);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceMap);
+	for(int i = 0; i < 6; i++)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0,
+			GL_RGB, GL_FLOAT, nullptr);
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+	
+	Shaders::Irradiance->use();
+	Shaders::Irradiance->setInt("environmentMap", 0);
+	Shaders::Irradiance->setMat4("projection", captureProject);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap);
+
+	glViewport(0, 0, 32, 32); 
+	glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		Shaders::Irradiance->setMat4("view", captureViews[i]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, irradianceMap, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		RenderBakingCube();
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(originalViewport[0], originalViewport[1], originalViewport[2], originalViewport[3]);
+
 	glDeleteFramebuffers(1, &captureFBO);
 	glDeleteRenderbuffers(1, &captureRBO);
 	glDeleteTextures(1, &hdrTexture);
 
-	textureID = cubemap;
-
+	irradianceID = irradianceMap;
 }
 
 CubemapTexture::~CubemapTexture()
@@ -181,7 +226,7 @@ void CubemapTexture::bind(unsigned int slot) const
 {
 	//Activate the texture slot
 	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID); 
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 }
 void CubemapTexture::unbind() const
 {

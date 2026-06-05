@@ -10,11 +10,10 @@ public:
 	//Draw every entity based on their transforms.
 	void update( EntityManager& em, Renderer& renderer, std::shared_ptr<CubemapTexture> cubemap)
 	{
-		//Draw the skybox
-		if( cubemap )
-		{
-			renderer.drawSkybox(cubemap);
-		}
+		
+		renderer.setEnvironment( cubemap );
+		
+
 		int numPointlights = 0;
 		//set all the point light component attributes in the shader
 		for (auto it = em.pointlightComponents.begin(); it != em.pointlightComponents.end(); it++)
@@ -43,14 +42,17 @@ public:
 		//Go through Model components and render
 		for(auto it = em.modelComponents.begin(); it != em.modelComponents.end(); it++)
 		{
+	
 			Entity entity = it->first;
 			ModelComponent& modelComp = it->second;
-			
+
 			auto transIt = em.transforms.find(entity);
-			if( transIt == em.transforms.end()){ continue; }
+			if (transIt == em.transforms.end())
+				continue;
+
 			TransformComponent& transComp = transIt->second;
-			
-			renderer.draw( *modelComp.model, transComp.modelMatrix );
+
+			renderer.draw( *modelComp.model, transComp.modelMatrix);
 		}
 		//Go through Mesh components and render
 		for( auto it = em.meshComponents.begin(); it != em.meshComponents.end(); it++)
@@ -65,6 +67,10 @@ public:
 			renderer.draw( *meshComp.mesh, transComp.modelMatrix);
 		}
 
+		if (cubemap)
+		{
+			renderer.drawSkybox(cubemap);
+		}
 	
 	}
 };

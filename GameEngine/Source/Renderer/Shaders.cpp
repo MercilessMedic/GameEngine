@@ -7,4 +7,6 @@ namespace Shaders
     std::shared_ptr<Shader> Unlit = nullptr;
     std::shared_ptr<Shader> Skybox = nullptr;
     std::shared_ptr<Shader> EquirectangularToCubemap = nullptr;
+    std::shared_ptr<Shader> Irradiance = nullptr;
+
 }

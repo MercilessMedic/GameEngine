@@ -118,22 +118,23 @@ Mesh Model::processMesh( aiMesh* mesh, const aiScene* scene )
 		{
 			aiBone* bone = mesh->mBones[i];
 			std::string boneName = bone->mName.C_Str();
-			int boneID;
-			if (boneMap.find(boneName) == boneMap.end())
+			int boneID = -1;
+			if (boneInfoMap.find(boneName) == boneInfoMap.end())
 			{
-				boneID = boneCounter;
-				boneMap[boneName] = boneID;
-				boneCounter++;
+				BoneInfo boneInfo;
+				boneInfo.boneID = boneCounter;
+				boneInfo.offsetMatrix = ConvertMatrix(bone->mOffsetMatrix);
 
-				BoneInfo info;
-				info.boneID = boneID;
-				info.offsetMatrix = ConvertMatrix(bone->mOffsetMatrix);
-				bonesInfo.push_back(info);
+				boneID = boneCounter; 
+
+				boneInfoMap[boneName] = boneInfo;
+				boneCounter++;
 			}
 			else
 			{
-				boneID = boneMap[boneName];
+				boneID = boneInfoMap[boneName].boneID;
 			}
+
 
 			for (int j = 0; j < bone->mNumWeights; j++)
 			{

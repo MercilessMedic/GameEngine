@@ -14,8 +14,6 @@ typedef uint32_t Entity;
 class EntityManager
 {
 public:
-	
-
 	std::unordered_set<Entity> entities;	
 	Entity nextEntity = 0;
 	std::unordered_map<Entity, TransformComponent> transforms;
@@ -24,7 +22,6 @@ public:
 	std::unordered_map<Entity, TagComponent> tagComponents;
 	std::unordered_map<Entity, CameraComponent> cameraComponents;
 	std::unordered_map<Entity, PointlightComponent> pointlightComponents;
-
 	Entity createEntity() 
 	{
 		nextEntity += 1;

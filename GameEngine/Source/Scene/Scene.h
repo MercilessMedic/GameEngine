@@ -11,7 +11,7 @@ class Scene
 public:
 	
 	//Calls update on the core systems
-	void update( Renderer& renderer )
+	void update( Renderer& renderer, float dt)
 	{
 		transformSystem.update( entityManager );
 		renderSystem.update( entityManager, renderer, getSkyboxTex());
@@ -52,6 +52,7 @@ public:
 		entityManager.addCameraComponent( e, cameraComp );
 	}
 
+
 	TransformComponent* getTransformComp( Entity e )
 	{
 		return entityManager.getTransformComponent( e );
@@ -70,6 +71,7 @@ public:
 	{
 		return entityManager.getCameraComponent(e);
 	}
+
 
 	EntityManager& getEntityManager()
 	{

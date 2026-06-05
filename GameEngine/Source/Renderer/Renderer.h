@@ -8,7 +8,6 @@
 #include "CubemapTexture.h"
 #include "Core/Camera/Camera.h"
 
-
 class Renderer
 {
 public:
@@ -28,12 +27,17 @@ public:
 	void draw( const Mesh& mesh, const glm::mat4& modelMatrix);
 	
 	//Draw meshes of the model with their materials
-	void draw( const Model& model, const glm::mat4& modelMatrix);
+	void draw( const Model& model, const glm::mat4& modelMatrix );
 
 	//Draw a skybox
 	void drawSkybox(std::shared_ptr<CubemapTexture> cubemap);
+
+	void setEnvironment(std::shared_ptr<CubemapTexture> cubemap);
+
 private:
+	
 	std::shared_ptr<VertexArray> skyboxVAO = nullptr;
+	std::shared_ptr<CubemapTexture> activeCubemap;
 	void clear();
 	//Currently active shader id
 	unsigned int activeShaderId;

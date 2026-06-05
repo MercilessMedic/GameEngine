@@ -43,7 +43,9 @@ bool Engine::init()
 	Shaders::Unlit = std::make_shared<Shader>("Source/Shaders/Unlit.vert", "Source/Shaders/Unlit.frag");
 	Shaders::EquirectangularToCubemap = std::make_shared<Shader>("Source/Shaders/equirectangularToCubemap.vert", 
 																 "Source/Shaders/equirectangularToCubemap.frag");
+	Shaders::Irradiance = std::make_shared<Shader>("Source/Shaders/Irradiance.vert", "Source/Shaders/Irradiance.frag");
 	Shaders::Skybox = std::make_shared<Shader>("Source/Shaders/Skybox.vert", "Source/Shaders/Skybox.frag");
+	
 
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window.getWindow(), window.getContext());
@@ -330,7 +332,7 @@ void Engine::run( Game& game )
 		renderer.setCamera( viewMat, projectMat, viewPos );
 		
 		//draw the game scene
-		game.scene.update(renderer);
+		game.scene.update(renderer, dt);
 
 		if( currentState == EngineState::Editor )
 		{
